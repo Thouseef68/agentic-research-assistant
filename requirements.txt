@@ -13,3 +13,4 @@ PyMuPDF
 Pillow
 python-dotenv
 pydantic
+pypdf
