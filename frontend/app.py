@@ -43,14 +43,19 @@ premium_ui_css = """
     }
     
     /* Strict padding isolation rules for streamed headers */
-    div[data-testid=\"stChatMessageContent\"] h1,
-    div[data-testid=\"stChatMessageContent\"] h2,
-    div[data-testid=\"stChatMessageContent\"] h3,
-    div[data-testid=\"stChatMessageContent\"] h4 {
-        color: #00FFCC !important;
+    /* Strict padding and size isolation rules for streamed headers */
+    div[data-testid="stChatMessageContent"] h1 { font-size: 1.4rem !important; color: #00FFCC !important; }
+    div[data-testid="stChatMessageContent"] h2 { font-size: 1.25rem !important; color: #00FFCC !important; }
+    div[data-testid="stChatMessageContent"] h3 { font-size: 1.1rem !important; color: #00FFCC !important; }
+    div[data-testid="stChatMessageContent"] h4 { font-size: 1.0rem !important; color: #00FFCC !important; }
+
+    div[data-testid="stChatMessageContent"] h1,
+    div[data-testid="stChatMessageContent"] h2,
+    div[data-testid="stChatMessageContent"] h3,
+    div[data-testid="stChatMessageContent"] h4 {
         font-weight: 600 !important;
-        margin-top: 24px !important;    /* Pushes text above away from the header */
-        margin-bottom: 12px !important; /* Pushes content below away from the header */
+        margin-top: 18px !important;    
+        margin-bottom: 10px !important; 
         display: block !important;
     }
     
