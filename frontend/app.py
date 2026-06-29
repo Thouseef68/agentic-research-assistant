@@ -35,7 +35,7 @@ premium_ui_css = """
     }
     /* 💡 Paste this updated layout block inside premium_ui_css in frontend/app.py */
     div[data-testid=\"stChatMessageContent\"] p {
-        font-size: 0.65rem !important;
+        font-size: 0.75rem !important;
         line-height: 1.65 !important;
         color: #E2E8F0 !important;
         margin-top: 0px !important;
