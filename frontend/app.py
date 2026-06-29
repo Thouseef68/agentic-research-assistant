@@ -17,7 +17,7 @@ premium_ui_css = """
     /* Global Inter and Coding Monospace Typeface Injections */
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
     
-    html, body, [data-testid="stAppViewContainer"] {
+    html, body, [data-testid=\"stAppViewContainer\"] {
         font-family: 'Plus Jakarta Sans', sans-serif;
         background: radial-gradient(circle at 50% 0%, #131722 0%, #090B10 100%) !important;
         color: #F1F5F9 !important;
@@ -27,14 +27,14 @@ premium_ui_css = """
     header, footer, #MainMenu { visibility: hidden !important; height: 0 !important; }
     
     /* Premium Frosted Glass Sidebar Implementation */
-    section[data-testid="stSidebar"] {
+    section[data-testid=\"stSidebar\"] {
         background: rgba(22, 28, 45, 0.45) !important;
         backdrop-filter: blur(20px) !important;
         -webkit-backdrop-filter: blur(20px) !important;
         border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
     }
     /* 💡 Paste this updated layout block inside premium_ui_css in frontend/app.py */
-    div[data-testid="stChatMessageContent"] p {
+    div[data-testid=\"stChatMessageContent\"] p {
         font-size: 0.95rem !important;
         line-height: 1.65 !important;
         color: #E2E8F0 !important;
@@ -43,10 +43,10 @@ premium_ui_css = """
     }
     
     /* Strict padding isolation rules for streamed headers */
-    div[data-testid="stChatMessageContent"] h1,
-    div[data-testid="stChatMessageContent"] h2,
-    div[data-testid="stChatMessageContent"] h3,
-    div[data-testid="stChatMessageContent"] h4 {
+    div[data-testid=\"stChatMessageContent\"] h1,
+    div[data-testid=\"stChatMessageContent\"] h2,
+    div[data-testid=\"stChatMessageContent\"] h3,
+    div[data-testid=\"stChatMessageContent\"] h4 {
         color: #00FFCC !important;
         font-weight: 600 !important;
         margin-top: 24px !important;    /* Pushes text above away from the header */
@@ -54,24 +54,37 @@ premium_ui_css = """
         display: block !important;
     }
     
-    div[data-testid="stChatMessageContent"] ul {
+    div[data-testid=\"stChatMessageContent\"] ul {
         margin-bottom: 16px !important;
         padding-left: 20px !important;
     }
     
-    div[data-testid="stChatMessageContent"] li {
+    div[data-testid=\"stChatMessageContent\"] h1, div[data-testid=\"stChatMessageContent\"] h2, div[data-testid=\"stChatMessageContent\"] h3, div[data-testid=\"stChatMessageContent\"] h4 {
+        color: #00FFCC !important;
+        font-weight: 600 !important;
+        margin-top: 24px !important;
+        margin-bottom: 12px !important;
+        display: block !important;
+    }
+    
+    div[data-testid=\"stChatMessageContent\"] ul {
+        margin-bottom: 16px !important;
+        padding-left: 20px !important;
+    }
+    
+    div[data-testid=\"stChatMessageContent\"] li {
         margin-bottom: 6px !important;
         line-height: 1.6 !important;
     }
     
-    div[data-testid="stChatMessageContent"] hr {
+    div[data-testid=\"stChatMessageContent\"] hr {
         border-color: rgba(255, 255, 255, 0.08) !important;
         margin-top: 20px !important;
         margin-bottom: 20px !important;
     }
     
     /* Top Telemetry Metric Blocks: Liquid Glow Accent Framework */
-    div[data-testid="stMetricContainer"] {
+    div[data-testid=\"stMetricContainer\"] {
         background: rgba(30, 41, 59, 0.3) !important;
         backdrop-filter: blur(12px) !important;
         -webkit-backdrop-filter: blur(12px) !important;
@@ -85,20 +98,20 @@ premium_ui_css = """
     }
     
     /* Decorative Gradient "Liquid Border" Accent Effect */
-    div[data-testid="stMetricContainer"]::before {
+    div[data-testid=\"stMetricContainer\"]::before {
         content: "";
         position: absolute;
         top: 0; left: 0; width: 4px; height: 100%;
         background: linear-gradient(180deg, #00FFCC 0%, #7928CA 100%);
     }
 
-    div[data-testid="stMetricContainer"]:hover {
+    div[data-testid=\"stMetricContainer\"]:hover {
         transform: translateY(-2px);
         border-color: rgba(0, 255, 204, 0.3) !important;
         box-shadow: 0 8px 30px rgba(0, 255, 204, 0.05);
     }
     
-    div[data-testid="stMetricValue"] {
+    div[data-testid=\"stMetricValue\"] {
         font-family: 'JetBrains Mono', monospace !important;
         font-size: 1.6rem !important;
         font-weight: 600 !important;
@@ -106,7 +119,7 @@ premium_ui_css = """
         letter-spacing: -0.02em;
     }
     
-    div[data-testid="stMetricLabel"] {
+    div[data-testid=\"stMetricLabel\"] {
         font-size: 0.75rem !important;
         font-weight: 600 !important;
         text-transform: uppercase !important;
@@ -130,7 +143,7 @@ premium_ui_css = """
     }
     
     /* Advanced Message Bubble Component Formatting */
-    div[data-testid="stChatMessage"] {
+    div[data-testid=\"stChatMessage\"] {
         background-color: transparent !important;
         padding: 20px 0px !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.03) !important;
@@ -156,7 +169,7 @@ premium_ui_css = """
     }
     
     /* Buttons Customization Core Override */
-    button[kind="primary"], button[kind="secondary"] {
+    button[kind=\"primary\"], button[kind=\"secondary\"] {
         background: linear-gradient(90deg, rgba(0,255,204,0.15) 0%, rgba(121,40,202,0.15) 100%) !important;
         border: 1px solid rgba(0, 255, 204, 0.4) !important;
         color: #00FFCC !important;
@@ -249,7 +262,7 @@ st.markdown("<div style='margin-top:25px; margin-bottom:25px; height:1px; backgr
 # --- SIDEBAR INTERFACE CONTROL SYSTEM ---
 with st.sidebar:
     st.markdown("<h2 style='color:#00FFCC; font-size:1.2rem; font-weight:600; letter-spacing:-0.01em; margin-bottom:15px;'>⚙️ CONTROL STATION</h2>", unsafe_allow_html=True)
-    st.markdown(f"**Security Context Identifier:** `Thread_Hash_{st.session_state['session_id']}`")
+    st.sidebar.markdown(f"**Security Context Identifier:** `Thread_Hash_{st.session_state['session_id']}`")
     st.markdown("<div style='margin-top:15px; margin-bottom:20px; height:1px; background:rgba(255,255,255,0.06);'></div>", unsafe_allow_html=True)
     
     st.markdown("<p style='font-size:0.8rem; font-weight:600; color:#94A3B8; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:10px;'>Index Corporate Corpus</p>", unsafe_allow_html=True)
@@ -307,6 +320,9 @@ for chat in st.session_state["chat_history"]:
         if chat.get("sources"):
             st.markdown(f"<div style='color:#64748B; font-size:0.8rem; font-weight:500; margin-top:6px; font-family:\"JetBrains Mono\", monospace;'>📚 CITATIONS VERIFIED: {', '.join(chat['sources'])}</div>", unsafe_allow_html=True)
 
+# 🧠 PREMIUM MODAL CONTROLLER: Injects loop-management toggle parameters above the text input
+enable_loops = st.toggle("🧠 Advanced Self-Healing Agent Mode (Uses more API tokens)", value=False)
+
 # User query capture sequence
 if user_input := st.chat_input("Transmit operational or technical inquiry vectors..."):
     
@@ -320,9 +336,11 @@ if user_input := st.chat_input("Transmit operational or technical inquiry vector
         sources_cited = []
         
         try:
+            # 🛠️ HYBRID PAYLOAD PACKAGING: Appends parameter values straight down the pipeline
             payload = {
                 "session_id": st.session_state["session_id"],
-                "question": user_input
+                "question": user_input,
+                "enable_loops": enable_loops
             }
             
             # Initiate streaming channel pipeline connection

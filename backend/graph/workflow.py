@@ -1,6 +1,7 @@
 import os
 import sys
 from langgraph.graph import StateGraph, START, END
+from langchain_core.runnables import RunnableConfig  # 🔥 Allows routers to read configuration variables
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(BASE_DIR, "../.."))
@@ -15,13 +16,45 @@ from backend.graph.nodes import (
     web_search_node,
     transform_query_node,
     hallucination_grader,
-    answer_grader
+    answer_grader,
+    casual_chat_node  # Registered clean import
 )
+
+# =========================================================================
+# 🛡️ ROUTER 0: INITIAL INTENT GATEKEEPER
+# =========================================================================
+def route_initial_intent(state: GraphState) -> str:
+    """
+    Evaluates incoming queries immediately at START. If it's a casual
+    greeting, it bypasses the entire vector database and web matrix.
+    """
+    # Safely extract user message from "question" string
+    user_msg = str(state.get("question", "")).lower().strip()
+    
+    casual_greetings = ["hello", "hi", "hey", "greetings", "good morning", "good afternoon", "good evening"]
+    
+    # Match direct words or ultra-short greeting phrases
+    if any(user_msg == g for g in casual_greetings) or (len(user_msg.split()) <= 2 and any(g in user_msg for g in casual_greetings)):
+        print("🤖 [ROUTER] Casual greeting detected. Routing directly to Casual Chat Node.")
+        return "casual_chat"
+        
+    print(f"🔍 [ROUTER] Heavy research objective identified: '{user_msg[:30]}...'. Routing to Retrieval Matrix.")
+    return "retrieve"
 
 # =========================================================================
 # ROUTER 1: POST-RETRIEVAL DATA MANAGER
 # =========================================================================
-def route_after_grading(state: GraphState) -> str:
+def route_after_grading(state: GraphState, config: RunnableConfig) -> str:
+    """
+    Evaluates context relevance. Intercepts configuration states to check 
+    if the linear response or full agent loops are armed.
+    """
+    enable_loops = config.get("configurable", {}).get("enable_loops", False)
+    
+    if not enable_loops:
+        print("➡️ [HYBRID ROUTER] Mode: One-Time Response. Bypassing web fallback loops.")
+        return "generate"
+        
     filtered_docs = state["documents"]
     if not filtered_docs:
         print("   维护 [ROUTER] State Alert: Zero relevant data survived grading. Diverting to WEB SEARCH.")
@@ -32,7 +65,17 @@ def route_after_grading(state: GraphState) -> str:
 # =========================================================================
 # 🛡️ ROUTER 2: COGNITIVE SELF-HEALING / RECOVERY ENGINE
 # =========================================================================
-def route_after_generation(state: GraphState) -> str:
+def route_after_generation(state: GraphState, config: RunnableConfig) -> str:
+    """
+    Runs self-correcting hallucination evaluations only if self-healing loops 
+    are armed. Otherwise, closes out cleanly on the initial response iteration.
+    """
+    enable_loops = config.get("configurable", {}).get("enable_loops", False)
+    
+    if not enable_loops:
+        print("➡️ [HYBRID ROUTER] Mode: One-Time Response. Bypassing evaluation loops. Ending execution.")
+        return "finalize"
+        
     question = state["question"]
     documents = state["documents"]
     generation = state["generation"]
@@ -71,19 +114,37 @@ def route_after_generation(state: GraphState) -> str:
     print("   ✅ Answer Relevance Passed: Generation accurately addresses the inquiry vector.")
     return "finalize"
 
+from langgraph.types import RetryPolicy
+# 💡 2. Define a strict single-attempt execution policy
+no_retry_policy = RetryPolicy(max_attempts=1)
 
 # --- GRAPH BLUEPRINT LAYOUT CONFIGURATION ---
 workflow = StateGraph(GraphState)
 
 # Register the operational nodes matrix
+workflow.add_node("casual_chat", casual_chat_node) # Node successfully added
 workflow.add_node("retrieve", retrieve_node)
 workflow.add_node("grade_documents", grade_documents_node)
 workflow.add_node("web_search", web_search_node)
-workflow.add_node("generate", generate_node)
-workflow.add_node("transform_query", transform_query_node)
+
+
+workflow.add_node("generate", generate_node, retry_policy=no_retry_policy)
+workflow.add_node("transform_query", transform_query_node, retry_policy=no_retry_policy)
+
+# Bind entry point to the conditional Gatekeeper Router
+workflow.add_conditional_edges(
+    START,
+    route_initial_intent,
+    {
+        "casual_chat": "casual_chat",
+        "retrieve": "retrieve"
+    }
+)
+
+# Connect casual chat straight to exit to protect your tokens!
+workflow.add_edge("casual_chat", END)
 
 # Establish core pathways
-workflow.add_edge(START, "retrieve")
 workflow.add_edge("retrieve", "grade_documents")
 
 # Bind Post-Retrieval Conditional Router Highway
@@ -112,6 +173,4 @@ workflow.add_conditional_edges(
 # Connect the query optimizer back into web search to finalize the healing loop
 workflow.add_edge("transform_query", "web_search")
 
-# 💡 NOTE: We export the raw compiled-ready 'workflow' builder blueprint object
-# This allows our runtime API endpoints to compile it cleanly inside an active async event loop context!
 print("🕸️ StateGraph Workflow structural matrix map successfully loaded.")

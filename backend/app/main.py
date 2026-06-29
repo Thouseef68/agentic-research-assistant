@@ -43,8 +43,9 @@ app.add_middleware(
 
 # Define the structured data schema for user questions
 class ResearchRequest(BaseModel):
-    session_id: str
     question: str
+    session_id: str
+    enable_loops: bool = False  # 🔥 Base schema update allowing frontend toggles
 
 DB_PATH = os.path.abspath(os.path.join(PROJECT_ROOT, "checkpoints.sqlite"))
 
@@ -105,7 +106,8 @@ async def run_agent_research(request: ResearchRequest):
         
         agent_config = {
             "configurable": {
-                "thread_id": request.session_id
+                "thread_id": request.session_id,  # ✅ Fixed missing configuration comma
+                "enable_loops": request.enable_loops  # 🔥 Propagates config down into the runtime environment
             },
             "recursion_limit": 15
         }
