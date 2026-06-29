@@ -175,7 +175,8 @@ premium_ui_css = """
 st.markdown(premium_ui_css, unsafe_allow_html=True)
 
 # 3. Dynamic API Configuration Link
-BACKEND_URL = "http://127.0.0.1:8000"
+# 💡 Point your local and production frontend directly to your live Railway API
+BACKEND_URL = "https://agentic-research-assistant-production-ba10.up.railway.app"
 
 # 4. Global State Tracking Architecture
 if "session_id" not in st.session_state:
