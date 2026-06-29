@@ -1,0 +1,13 @@
+# Local environment credentials
+.env
+*.env
+
+# Local database memory states
+checkpoints.sqlite
+chroma_db/
+data/
+
+# Python caching systems
+__pycache__/
+*.pyc
+.pytest_cache/
