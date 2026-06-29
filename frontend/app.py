@@ -174,8 +174,7 @@ premium_ui_css = """
 """
 st.markdown(premium_ui_css, unsafe_allow_html=True)
 
-# 3. Dynamic API Configuration Link
-# 💡 Point your local and production frontend directly to your live Railway API
+# 💡 HARDCODED PRODUCTION FIX: Force the frontend to talk directly to your live working backend
 BACKEND_URL = "https://agentic-research-assistant-production-ba10.up.railway.app"
 
 # 4. Global State Tracking Architecture
