@@ -90,6 +90,8 @@ async def upload_knowledge_document(file: UploadFile = File(...), session_id: st
         return {"status": "error", "message": f"Internal parser initialization failure: {str(e)}"}
 
 
+
+
 @app.post("/research")
 async def run_agent_research(request: ResearchRequest):
     print(f"\n🤖 [API STREAM ENTRY] Initializing Stream Event Stream for Session: {request.session_id}")
@@ -104,10 +106,11 @@ async def run_agent_research(request: ResearchRequest):
         agent_config = {
             "configurable": {
                 "thread_id": request.session_id
-            }
+            },
+            "recursion_limit": 15
         }
         
-        # 💡 SOLUTION: Open the Asynchronous Checkpointer context safely inside the stream lifecycle block!
+        # Open the Asynchronous Checkpointer context safely inside the stream lifecycle block
         async with AsyncSqliteSaver.from_conn_string(DB_PATH) as checkpointer:
             # Setup database tables if they do not already exist
             await checkpointer.setup()
@@ -118,16 +121,21 @@ async def run_agent_research(request: ResearchRequest):
             # Stream the graph events over the connection stream
             async for event in local_compiled_graph.astream_events(initial_inputs, config=agent_config, version="v2"):
                 kind = event.get("event")
+                metadata = event.get("metadata", {})
+                node_name = metadata.get("langgraph_node", "")  # 💡 Extract the true node identifier
                 
+                # 1. Stream token text chunks in real-time
                 if kind == "on_chat_model_stream":
                     chunk = event["data"].get("chunk")
                     if chunk and chunk.content:
                         yield f"TOKEN:{chunk.content}\n"
                 
-                elif kind == "on_node_end" and event.get("name") == "grade_documents":
+                # 2. Catch exactly when the 'grade_documents' node finishes processing
+                elif kind == "on_chain_end" and node_name == "grade_documents":
                     output = event["data"].get("output", {})
-                    docs = output.get("documents", [])
-                    citations = list(set([doc.metadata.get("source", "Unknown Document") for doc in docs]))
-                    yield f"SOURCES:{json.dumps(citations)}\n"
+                    if isinstance(output, dict):
+                        docs = output.get("documents", [])
+                        citations = list(set([doc.metadata.get("source", "Unknown Document") for doc in docs]))
+                        yield f"SOURCES:{json.dumps(citations)}\n"
 
     return StreamingResponse(stream_generator(), media_type="text/plain")
