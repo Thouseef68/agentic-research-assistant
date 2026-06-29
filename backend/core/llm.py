@@ -25,7 +25,7 @@ embedding_model = OpenAIEmbeddings(
 llm = ChatOpenAI(
     base_url=GITHUB_MODELS_URL,
     api_key=os.getenv("GITHUB_TOKEN"),
-    model="gpt-4o",
+    model="gpt-4o-mini",
     temperature=0.0  # Grounded, strict responses
 )
 
