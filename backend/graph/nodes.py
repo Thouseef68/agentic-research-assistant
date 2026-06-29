@@ -21,8 +21,6 @@ from langchain_core.documents import Document
 # Instantiate Tavily to gather the top 2 highly pristine text snippets
 web_search_tool = TavilySearchResults(max_results=2)
 
-# ... (Keep your existing structured_llm_grader, retrieve_node, and grade_documents_node exactly as they are) ...
-
 def web_search_node(state: GraphState) -> dict:
     """
     NODE 4: The Intelligent Internet Fallback Operator.
@@ -165,8 +163,6 @@ async def generate_node(state: GraphState, config: RunnableConfig) -> dict:
     
     return {"generation": ai_response.content, "documents": documents, "question": question}
 
-# Add these imports at the very top of backend/graph/nodes.py if not present
-from pydantic import BaseModel, Field
 
 # =========================================================================
 # 🛡️ HYPER-ADVANCED: STRUCTURED EVALUATOR SCHEMAS
@@ -219,3 +215,29 @@ def transform_query_node(state: GraphState) -> dict:
     
     # Update the active question variable inside the state loop memory
     return {"question": optimized_query, "documents": documents}
+
+
+# =========================================================================
+# 🧬 LIGHTWEIGHT ASYNC STREAMING CHAT NODE
+# =========================================================================
+async def casual_chat_node(state: GraphState, config: RunnableConfig) -> dict:
+    """
+    💡 CHAT COMPONENT: Intercepts casual greetings (hi, hello, morning).
+    Invokes the core LLM instance directly to stream a polite 1-2 sentence 
+    response, completely saving your API quota from heavy RAG loops.
+    """
+    print("🤖 [NODE: CASUAL CHAT] Intercepted greeting. Compiling fast stream context...")
+    user_question = state.get("question", "")
+    
+    # Explicitly constrain the model to ensure a short, conversational response frame
+    prompt = (
+        f"The user just said a casual greeting: '{user_question}'. "
+        f"Respond politely in exactly one or two sentences max. "
+        f"Remind them to upload an analytical research document in the sidebar or "
+        f"ask a specific analytical question to begin compiling a report."
+    )
+    
+    # ainvoke seamlessly triggers 'on_chat_model_stream' inside your API generator pool
+    ai_response = await llm.ainvoke(prompt, config=config)
+    
+    return {"generation": ai_response.content, "question": user_question}
