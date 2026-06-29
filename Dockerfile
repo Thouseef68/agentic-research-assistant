@@ -4,11 +4,10 @@ FROM python:3.10-slim
 # Set system work environments
 WORKDIR /app
 
-# Install system utilities needed for building packages
+# 💡 FIXED: Removed software-properties-common to prevent minimal Debian repo search crashes
 RUN apt-get update && apt-get install -y \
     build-essential \
     curl \
-    software-properties-common \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install dependencies
