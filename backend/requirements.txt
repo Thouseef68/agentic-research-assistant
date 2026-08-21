@@ -10,7 +10,7 @@ pydantic==2.9.0
 pypdf==4.2.0
 langchain-openai==0.3.0
 tavily-python==0.1.0
-langgraph-checkpoint-sqlite==2.0.11
+langgraph-checkpoint-sqlite==1.0.4
 aiosqlite
 PyMuPDF
 Pillow
