@@ -1,6 +1,6 @@
 langchain==0.3.0
 langchain-google-genai==2.0.0
-langgraph==0.2.56
+langgraph==0.2.24
 langchain-chroma==0.1.4
 fastapi==0.115.0
 uvicorn==0.30.6
