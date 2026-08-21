@@ -1,6 +1,6 @@
 langchain==0.3.0
 langchain-google-genai==2.0.0
-langgraph==0.2.24
+langgraph==0.5.4
 langchain-chroma==0.1.4
 fastapi==0.115.0
 uvicorn==0.30.6
@@ -10,7 +10,7 @@ pydantic==2.9.0
 pypdf==4.2.0
 langchain-openai==0.3.0
 tavily-python==0.1.0
-langgraph-checkpoint-sqlite==1.0.4
+langgraph-checkpoint-sqlite==2.0.11
 aiosqlite
 PyMuPDF
 Pillow
