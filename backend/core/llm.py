@@ -12,7 +12,7 @@ if not os.getenv("GITHUB_TOKEN"):
     raise ValueError(f"❌ Error: GITHUB_TOKEN could not be resolved from: {ENV_PATH}")
 
 # GitHub Models universal inference endpoint
-GITHUB_MODELS_URL = "https://models.inference.ai.azure.com"
+GITHUB_MODELS_URL = "https://models.github.ai/inference"
 
 # 2. Initialize OpenAI Embeddings via GitHub Proxy (Generates 1536-dimensional vectors)
 embedding_model = OpenAIEmbeddings(
