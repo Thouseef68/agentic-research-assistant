@@ -15,3 +15,5 @@ aiosqlite==0.21.0
 PyMuPDF
 Pillow
 python-multipart
+langchain-huggingface
+sentence-transformers
