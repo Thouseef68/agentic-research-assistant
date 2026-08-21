@@ -193,7 +193,7 @@ premium_ui_css = """
 st.markdown(premium_ui_css, unsafe_allow_html=True)
 
 # 💡 HARDCODED PRODUCTION FIX: Force the frontend to talk directly to your live working backend
-BACKEND_URL = "https://agentic-research-assistant-production-ba10.up.railway.app"
+BACKEND_URL = "https://agentic-research-assistant-ss1j.onrender.com"
 
 # 4. Global State Tracking Architecture
 if "session_id" not in st.session_state:
