@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from langchain_openai import ChatOpenAI
+from langchain_huggingface import HuggingFaceEmbeddings
 
 # ==========================================
 # ENVIRONMENT
@@ -30,20 +31,19 @@ llm = ChatOpenAI(
 
 
 # ==========================================
-# GITHUB — EXISTING EMBEDDINGS
+# LOCAL — RAG EMBEDDINGS
 # ==========================================
 
-GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
-
-if not GITHUB_TOKEN:
-    raise ValueError("❌ GITHUB_TOKEN is missing")
-
-embedding_model = OpenAIEmbeddings(
-    base_url="https://models.github.ai/inference",
-    api_key=GITHUB_TOKEN,
-    model="text-embedding-3-small"
+embedding_model = HuggingFaceEmbeddings(
+    model_name="sentence-transformers/all-MiniLM-L6-v2",
+    model_kwargs={"device": "cpu"},
+    encode_kwargs={"normalize_embeddings": True}
 )
 
 
+# ==========================================
+# STATUS
+# ==========================================
+
 print("🧠 Brain: Groq GPT-OSS 120B")
-print("📚 Embeddings: GitHub text-embedding-3-small")
+print("📚 Embeddings: Local HuggingFace all-MiniLM-L6-v2")
