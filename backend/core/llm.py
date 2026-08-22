@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
 # ==========================================
 # ENVIRONMENT
@@ -31,13 +31,17 @@ llm = ChatOpenAI(
 
 
 # ==========================================
-# LOCAL — RAG EMBEDDINGS
+# GEMINI — RAG EMBEDDINGS
 # ==========================================
 
-embedding_model = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-MiniLM-L6-v2",
-    model_kwargs={"device": "cpu"},
-    encode_kwargs={"normalize_embeddings": True}
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+
+if not GEMINI_API_KEY:
+    raise ValueError("❌ GEMINI_API_KEY is missing")
+
+embedding_model = GoogleGenerativeAIEmbeddings(
+    model="models/gemini-embedding-001",
+    google_api_key=GEMINI_API_KEY
 )
 
 
@@ -46,4 +50,4 @@ embedding_model = HuggingFaceEmbeddings(
 # ==========================================
 
 print("🧠 Brain: Groq GPT-OSS 120B")
-print("📚 Embeddings: Local HuggingFace all-MiniLM-L6-v2")
+print("📚 Embeddings: Gemini Embedding 001")
